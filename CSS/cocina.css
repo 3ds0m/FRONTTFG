@@ -1,0 +1,524 @@
+/* Variables de colores */
+:root {
+  --primary: #ff6b6b;
+  --secondary: #4ecdc4;
+  --accent: #ffe66d;
+  --dark: #292f36;
+  --light: #f7fff7;
+  --gradient-1: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  --gradient-2: linear-gradient(135deg, #4ecdc4 0%, #2cbfc7 100%);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+}
+
+/* Estilos generales */
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--dark);
+  background-color: #f9f9f9;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+  position: relative;
+  display: inline-block;
+}
+
+.section-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--gradient-1);
+  border-radius: 2px;
+}
+
+.section-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Estilos del header */header {
+  background-color: white;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+header .logo h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--dark);
+}
+
+header .logo span {
+  color: var(--primary);
+}
+
+header .nav-link {
+  color: var(--dark);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  margin: 0 0.2rem;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+}
+
+header .nav-link:hover {
+  color: var(--primary);
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* Estilos del hero */
+.hero {
+  padding: 5rem 0;
+  background: var(--gradient-2);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://via.placeholder.com/1920x1080");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.hero .lead {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* Nuevo estilo para el hero de cocinas */
+.cuisine-hero {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 6rem 0;
+}
+
+.cuisine-hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 2rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cuisine-hero-buttons .cuisine-tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.cuisine-hero-buttons .cuisine-tag:hover {
+  background-color: white;
+  color: var(--secondary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.cuisine-hero-buttons .cuisine-tag.active {
+  background-color: white;
+  color: var(--secondary);
+  border-color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos de las secciones */
+section {
+  padding: 5rem 0;
+}
+
+#cocinas {
+  background-color: white;
+}
+
+/* Estilos para los botones de cocina (mantener para compatibilidad) */
+#cuisine-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.cuisine-tag {
+  background: var(--primary);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cuisine-tag:hover {
+  background: #ff5252;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+}
+
+.cuisine-tag.active {
+  background: var(--dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cuisine-tag:focus {
+  outline: none;
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Estilos de las tarjetas de restaurantes */
+.restaurant-card-wrapper {
+  height: 100%;
+  display: flex;
+}
+
+/* Estilos para la lista de restaurantes usando CSS Grid */
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Muestra 4 elementos por fila */
+  gap: 1rem;
+}
+
+.restaurant-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+  width: 100%;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.restaurant-card-img {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.restaurant-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.restaurant-card-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.restaurant-card-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+}
+
+.rating-stars {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.price-level {
+  display: inline-block;
+  background: var(--secondary);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.view-details-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.view-details-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+  color: white;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+  .restaurant-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 elementos por fila en pantallas medianas */
+  }
+}
+
+@media (max-width: 576px) {
+  .restaurant-list {
+    grid-template-columns: repeat(1, 1fr); /* 1 elemento por fila en pantallas pequeñas */
+  }
+}
+
+/* Estilos del footer */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: var(--primary);
+}
+/* Estilos para los modales */
+.modal-restaurant-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-restaurant-img-container {
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.modal-restaurant-img {
+  width: 100%;
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-restaurant-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-restaurant-content {
+  padding: 1.5rem;
+}
+
+.modal-content {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: none;
+  box-shadow: var(--shadow);
+}
+
+.modal-header {
+  background: var(--gradient-2);
+  color: white;
+  border-bottom: none;
+}
+
+/* Estilos del footer */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: var(--primary);
+}
+
+/* Estilos responsive */
+@media (min-width: 768px) {
+  .modal-restaurant-details {
+    flex-direction: row;
+  }
+
+  .modal-restaurant-img-container {
+    width: 55%;
+    padding: 20px;
+  }
+
+  .modal-restaurant-img {
+    height: 400px;
+  }
+
+  .modal-restaurant-content {
+    width: 45%;
+  }
+
+  .restaurant-card {
+    flex-direction: row;
+  }
+
+  .restaurant-card-img {
+    width: 40%;
+    height: auto;
+  }
+
+  .restaurant-card-content {
+    width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .cuisine-hero-buttons {
+    gap: 8px;
+  }
+
+  .cuisine-hero-buttons .cuisine-tag {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero .lead {
+    font-size: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .section-header p {
+    font-size: 0.9rem;
+  }
+
+  .restaurant-card-title {
+    font-size: 1.1rem;
+  }
+
+  .cuisine-tag {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .cuisine-hero-buttons .cuisine-tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    margin: 3px;
+  }
+}
