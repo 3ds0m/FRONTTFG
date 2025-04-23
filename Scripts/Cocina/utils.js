@@ -1,4 +1,4 @@
-// Function to generate star rating HTML
+// Funcion para generar el HTML de la calificación con estrellas
 export function generateRatingStars(rating) {
   const starCount = Math.round(rating)
   let stars = ""
@@ -12,7 +12,7 @@ export function generateRatingStars(rating) {
   return stars
 }
 
-// Function to display price level
+// Funcion para mostrar el rango de precio
 export function displayPriceLevel(level) {
   // Si el nivel de precio es N/A, mostrar "Sorpresa"
   if (level === "N/A") {
@@ -32,7 +32,7 @@ export function displayPriceLevel(level) {
     : '<span class="text-muted">Precio no disponible</span>'
 }
 
-// Function to shuffle array (Fisher-Yates shuffle)
+// Funcion para mezclar un array (Fisher-Yates shuffle)
 export function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -41,7 +41,7 @@ export function shuffleArray(array) {
   return array
 }
 
-// Function to display an error message
+// Funcion para mostrar un mensaje de error
 export function showError(message) {
   const errorContainer = document.createElement("div")
   errorContainer.classList.add("alert", "alert-danger")
@@ -50,7 +50,7 @@ export function showError(message) {
   const mainContent = document.querySelector("main") || document.body
   mainContent.prepend(errorContainer)
 
-  // Remove the error message after 5 seconds
+  // Remueve el mensaje de error después de 5 segundos
   setTimeout(() => {
     errorContainer.remove()
   }, 5000)
