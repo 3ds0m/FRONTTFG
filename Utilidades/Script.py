@@ -1,7 +1,7 @@
 import requests
 
 base_url = "https://api.content.tripadvisor.com/api/v1/location/search"
-api_key = "746F3ABE44B944CDA5DCFF366DDFD396"
+api_key = ""
 categories = ["casera", "cocteleria", "bar", "restaurante", "chocolateria","kebab"]
 
 # Límites aproximados de Madrid
