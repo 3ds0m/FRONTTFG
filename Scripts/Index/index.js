@@ -1,7 +1,7 @@
 import { initMap } from './map.js';
 import { initRestaurants } from './restaurant.js';
 import { showError } from './utils.js';
-import * as bootstrap from 'bootstrap';
+import { initOffers } from './offers.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Cargar todos los restaurantes desde el nuevo endpoint
@@ -40,22 +40,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("reload-restaurants-btn")?.addEventListener("click", () => {
     location.reload();
   });
-  
-  // Cargar el script de ofertas dinámicamente
-  const offersScript = document.createElement('script');
-  offersScript.src = 'Scripts/index/offers.js';
-  offersScript.onload = function() {
-    // Una vez cargado el script, inicializar las ofertas
-    if (typeof window.initOffers === 'function') {
-      window.initOffers();
-    }
-  };
-  document.body.appendChild(offersScript);
-  
-  // Cargar Bootstrap para los modales
-  if (typeof bootstrap === 'undefined') {
-    const bootstrapScript = document.createElement('script');
-    bootstrapScript.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
-    document.body.appendChild(bootstrapScript);
-  }
+  initOffers();
 });

@@ -6,10 +6,10 @@ let currentCuisineRestaurants = []
 let allRestaurantsData = []
 
 // Función para cargar los datos de restaurantes desde un archivo JSON
-async function loadRestaurantsData() {
+async function loadRestaurantsData() {  
   try {
     const response = await fetch("http://localhost:9000/listarestaurantes")
-
+    console.log("Response:", response)
     if (!response.ok) {
       throw new Error("Error al cargar el archivo JSON")
     }
@@ -33,8 +33,8 @@ function generateCuisineList(restaurantsData) {
   // Crear un Set para obtener tipos de cocina únicos
   const allCuisines = new Set()
   restaurantsData.forEach((restaurant) => {
-    if (restaurant.cuisine_types) {
-      const cuisines = restaurant.cuisine_types.split(", ").map((cuisine) => cuisine.trim())
+    if (restaurant.cuisine_type) {
+      const cuisines = restaurant.cuisine_type.split(", ").map((cuisine) => cuisine.trim())
       cuisines.forEach((cuisine) => {
         if (cuisine) allCuisines.add(cuisine)
       })
@@ -82,8 +82,8 @@ function showRestaurantsByCuisine(cuisine, restaurantsData) {
   // Filtramos los restaurantes que contienen el tipo de cocina seleccionado
   const filteredRestaurants = restaurantsData.filter((restaurant) => {
     return (
-      restaurant.cuisine_types &&
-      restaurant.cuisine_types
+      restaurant.cuisine_type &&
+      restaurant.cuisine_type
         .split(", ")
         .map((c) => c.trim())
         .includes(cuisine)
@@ -131,7 +131,7 @@ function showRestaurantsByCuisine(cuisine, restaurantsData) {
                 ${generateRatingStars(restaurant.rating)}
                 <span class="ms-1">${restaurant.rating || "N/A"}</span>
               </div>
-              <p class="mb-2">${displayPriceLevel(restaurant.price_level)}</p>
+              <p class="mb-2">${displayPriceLevel(restaurant.pricelevel)}</p>
             </div>
             <button class="view-details-btn" onclick="openRestaurantModal(${index}, 'cuisine')">
               <i class="fas fa-info-circle"></i> Ver detalles
@@ -157,12 +157,12 @@ function createRestaurantModals(restaurants, type) {
 
   // Crear modales para cada restaurante
   restaurants.forEach((restaurant, index) => {
-    const cuisineTags = (restaurant.cuisine_types?.split(", ") || [])
+    const cuisineTags = (restaurant.cuisine_type?.split(", ") || [])
       .map((c) => `<span class="cuisine-tag" onclick="navigateToCuisine('${c}')">${c}</span>`)
       .join("")
 
     const address =
-      restaurant.address_obj?.address_string || restaurant.address_obj?.street1 || "Dirección no disponible"
+      restaurant.address_string || restaurant.street1 || "Dirección no disponible"
 
     container.insertAdjacentHTML(
       "beforeend",
@@ -183,7 +183,7 @@ function createRestaurantModals(restaurants, type) {
                 </div>
                 <div class="modal-restaurant-content">
                   <div class="rating-stars mb-3">${generateRatingStars(restaurant.rating)}<span class="ms-2">${restaurant.rating || "N/A"}</span></div>
-                  <p class="mb-2">${displayPriceLevel(restaurant.price_level)}</p>
+                  <p class="mb-2">${displayPriceLevel(restaurant.pricelevel)}</p>
                   <p><strong><i class="fas fa-map-marker-alt"></i> Dirección:</strong></p>
                   <p>${address}</p>
                   ${cuisineTags ? `<p><strong><i class="fas fa-utensils"></i> Cocina:</strong></p><div class="cuisine-tags mb-3">${cuisineTags}</div>` : ""}
@@ -246,8 +246,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Buscar el tipo de cocina en los datos
       const cuisineExists = restaurantsData.some(
         (restaurant) =>
-          restaurant.cuisine_types &&
-          restaurant.cuisine_types
+          restaurant.cuisine_type &&
+          restaurant.cuisine_type
             .split(", ")
             .map((c) => c.trim())
             .includes(cuisineParam),
