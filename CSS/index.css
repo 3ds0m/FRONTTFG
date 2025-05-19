@@ -110,7 +110,7 @@ header .nav-link:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("https://via.placeholder.com/1920x1080");
+  background-image: url("https://mundojuego.es/wp-content/uploads/2024/03/placeholder.png");
   background-size: cover;
   background-position: center;
   opacity: 0.1;
@@ -459,6 +459,253 @@ section {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
   color: white;
+}
+/* Estilos para la sección de ofertas */
+#ofertas {
+  padding: 60px 0;
+  background-color: #f9f9f9;
+}
+
+/* Tarjetas de ofertas */
+.offer-card {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.offer-discount {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #e74c3c;
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.offer-img {
+  height: 150px;
+  overflow: hidden;
+}
+
+.offer-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.offer-card:hover .offer-img img {
+  transform: scale(1.1);
+}
+
+.offer-content {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.offer-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.offer-location {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.offer-price {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 10px;
+  font-size: 0.9rem;
+}
+
+.new-price {
+  font-weight: bold;
+  color: #e74c3c;
+  font-size: 1.1rem;
+}
+
+.offer-valid {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Oferta destacada */
+.featured-offer {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.featured-offer-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.featured-offer-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-discount {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #e74c3c;
+  color: white;
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+.featured-offer-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-location {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.featured-description {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.featured-price {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.featured-price .old-price {
+  font-size: 1.1rem;
+}
+
+.featured-price .new-price {
+  font-size: 1.4rem;
+}
+
+/* Modal de oferta y restaurante */
+.offer-restaurant-details {
+  background: #fff;
+}
+
+.offer-detail-section, .restaurant-detail-section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-detail-img, .restaurant-detail-img {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.offer-detail-img img, .restaurant-detail-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.offer-discount-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #e74c3c;
+  color: white;
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+.offer-detail-content, .restaurant-detail-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer-price-detail {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.old-price-detail {
+  color: #666;
+  text-decoration: line-through;
+  margin-bottom: 5px;
+}
+
+.new-price-detail {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.new-price-detail span {
+  color: #e74c3c;
+}
+
+.offer-validity {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.offer-validity p {
+  margin-bottom: 5px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .offer-restaurant-details .row {
+    flex-direction: column;
+  }
+  
+  .offer-detail-section, .restaurant-detail-section {
+    margin-bottom: 20px;
+  }
 }
 
 /* Estilos del footer */
