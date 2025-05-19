@@ -102,6 +102,44 @@
       </div>
     </div>
   </section>
+  <!-- ZONA OFERTAS - Agregar esta sección después de la sección "low-cost" -->
+<section id="ofertas" class="mt-5">
+  <div class="container">
+    <div class="section-header">
+      <h2>Ofertas Especiales</h2>
+      <p>Descubre promociones exclusivas en restaurantes de Madrid</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 mb-4">
+        <div class="ofertas-container">
+          <h3><i class="fas fa-percentage"></i> Ofertas Disponibles</h3>
+          <div class="text-center mb-3">
+            <button id="load-offers-btn" class="btn btn-primary">
+              <i class="fas fa-sync-alt me-2"></i> Cargar Ofertas
+            </button>
+          </div>
+          <div id="offers-container" class="row g-3">
+            <!-- Las tarjetas de ofertas se generarán dinámicamente con JavaScript -->
+            <div class="col-12">
+              <div class="alert alert-info">
+                Haz clic en el botón para cargar las ofertas disponibles.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="oferta-destacada">
+          <h3><i class="fas fa-star"></i> Oferta Destacada</h3>
+          <div id="featured-offer-box" class="card">
+            <!-- Inicialmente, solo muestra un mensaje de espera hasta que se seleccione una oferta -->
+            <p class="text-center">Carga las ofertas para ver una destacada</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- FOOTER -->
   <footer>

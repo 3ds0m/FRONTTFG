@@ -8,7 +8,7 @@ let allRestaurantsData = []
 // Función para cargar los datos de restaurantes desde un archivo JSON
 async function loadRestaurantsData() {
   try {
-    const response = await fetch("../restaurantes.json")
+    const response = await fetch("http://localhost:9000/listarestaurantes")
 
     if (!response.ok) {
       throw new Error("Error al cargar el archivo JSON")
@@ -120,9 +120,9 @@ function showRestaurantsByCuisine(cuisine, restaurantsData) {
       <div class="restaurant-card-wrapper">
         <div class="restaurant-card">
           <div class="restaurant-card-img">
-            <img src="${restaurant.image || "../img/default-restaurant.jpg"}" 
+            <img src="${restaurant.image || "default-restaurant.png"}" 
                  alt="${restaurant.name}" 
-                 onerror="this.src='../img/default-restaurant.jpg'">
+                 onerror="this.src='default-restaurant.png'">
           </div>
           <div class="restaurant-card-content">
             <div>
@@ -178,7 +178,7 @@ function createRestaurantModals(restaurants, type) {
               <div class="modal-restaurant-details">
                 <div class="modal-restaurant-img-container">
                   <div class="modal-restaurant-img">
-                    <img src="${restaurant.image || "../img/default-restaurant.jpg"}" alt="${restaurant.name}" onerror="this.src='../img/default-restaurant.jpg'">
+                    <img src="${restaurant.image || "default-restaurant.png"}" alt="${restaurant.name}" onerror="this.src='default-restaurant.png'">
                   </div>
                 </div>
                 <div class="modal-restaurant-content">
