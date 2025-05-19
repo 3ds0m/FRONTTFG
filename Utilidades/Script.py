@@ -1,6 +1,6 @@
 import requests
 base_url = "https://api.content.tripadvisor.com/api/v1/location/search"
-api_key = "746F3ABE44B944CDA5DCFF366DDFD396"
+api_key = ""
 categories = ["casera", "cocteleria", "bar", "restaurante", "chocolateria","kebab"]
 # Límites aproximados de Madrid
 lat_start, lat_end = 40.35, 40.50
@@ -32,4 +32,9 @@ while current_lat <= lat_end:
 with open("tripadvisor_urls.txt", "w") as f:
     for url in urls:
         f.write(url + "\n")
+<<<<<<< HEAD
 print(f"Total URLs generadas: {len(urls)}")
+=======
+
+print(f"Total URLs generadas: {len(urls)}")
+>>>>>>> c4e4b13fefac63c2f71e96f5e938b34c927bf40c
