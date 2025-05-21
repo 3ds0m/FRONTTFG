@@ -14,6 +14,7 @@
   position: relative;
   z-index: 10; /* Ajusta este valor según sea necesario */
 }
+
 /* Estilos generales */
 body {
   font-family: "Poppins", sans-serif;
