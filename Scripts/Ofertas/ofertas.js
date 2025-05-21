@@ -97,17 +97,13 @@ function loadAllOffers() {
                   <span class="new-price">${offer.new_price}€</span>
                 </div>
                 <p class="offer-valid">Válido hasta: ${endDate}</p>
-                <div class="row mt-3">
-                  <div class="col-6 pe-1">
-                    <button class="btn btn-primary w-100" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
-                      <i class="fas fa-info-circle me-1"></i> Ver detalles
-                    </button>
-                  </div>
-                  <div class="col-6 ps-1">
-                    <button class="btn btn-success w-100" onclick="handlePayment(${offer.id})">
-                      <i class="fas fa-credit-card me-1"></i> Gestionar pago
-                    </button>
-                  </div>
+                <div class="d-flex justify-content-between mt-3">
+                  <button class="view-details-btn" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
+                    <i class="fas fa-info-circle me-1"></i> Ver detalles
+                  </button>
+                  <button class="view-details-btn" onclick="handlePayment(${offer.id})">
+                    <i class="fas fa-credit-card me-1"></i> Gestionar pago
+                  </button>
                 </div>
               </div>
             </div>
@@ -281,11 +277,12 @@ function openOfferModal(restaurantData, offerIndex) {
         <p><strong><i class="fas fa-map-marker-alt"></i> Dirección:</strong></p>
         <p>${address}</p>
         ${cuisineTags ? `<p><strong><i class="fas fa-utensils"></i> Cocina:</strong></p><div class="cuisine-tags mb-3">${cuisineTags}</div>` : ""}
-        <div class="d-flex justify-content-between mt-3">
-          <a href="https://www.google.com/maps/search/${encodeURIComponent(restaurantData.name)}+${encodeURIComponent(address)}" target="_blank" class="google-maps-btn">
+        <div class="d-flex flex-column flex-sm-row gap-2 mt-3">
+          <a href="https://www.google.com/maps/search/${encodeURIComponent(restaurantData.name)}+${encodeURIComponent(address)}"
+            target="_blank" class="google-maps-btn flex-fill text-center">
             <i class="fas fa-map-marker-alt"></i> Ver en Google Maps
           </a>
-          <button class="view-details-btn" onclick="handlePayment(${offer.id})">
+          <button class="view-details-btn flex-fill" onclick="handlePayment(${offer.id})">
             <i class="fas fa-credit-card me-1"></i> Gestionar pago
           </button>
         </div>
