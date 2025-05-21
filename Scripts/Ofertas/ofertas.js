@@ -97,13 +97,17 @@ function loadAllOffers() {
                   <span class="new-price">${offer.new_price}€</span>
                 </div>
                 <p class="offer-valid">Válido hasta: ${endDate}</p>
-                <div class="d-flex justify-content-between mt-3">
-                  <button class="view-details-btn" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
-                    <i class="fas fa-info-circle me-1"></i> Ver detalles
-                  </button>
-                  <button class="view-details-btn" onclick="handlePayment(${offer.id})">
-                    <i class="fas fa-credit-card me-1"></i> Gestionar pago
-                  </button>
+                <div class="row mt-3">
+                  <div class="col-6 pe-1">
+                    <button class="btn btn-primary w-100" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
+                      <i class="fas fa-info-circle me-1"></i> Ver detalles
+                    </button>
+                  </div>
+                  <div class="col-6 ps-1">
+                    <button class="btn btn-success w-100" onclick="handlePayment(${offer.id})">
+                      <i class="fas fa-credit-card me-1"></i> Gestionar pago
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
