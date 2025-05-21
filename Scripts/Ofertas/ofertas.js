@@ -29,7 +29,7 @@ function loadAllOffers() {
   statusContainer.innerHTML = "";
   console.log("listaofertas")
   // Obtener las ofertas del endpoint
-  fetch("http://localhost:9000/listaofertas")
+  fetch("http://localhost:8080/listaofertas")
   
     .then(response => {
       if (!response.ok) throw new Error("No se pudieron cargar las ofertas");
@@ -89,9 +89,14 @@ function loadAllOffers() {
                   <span class="new-price">${offer.new_price}€</span>
                 </div>
                 <p class="offer-valid">Válido hasta: ${endDate}</p>
-                <button class="view-details-btn" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
-                  <i class="fas fa-info-circle"></i> Ver detalles
-                </button>
+                <div class="d-flex justify-content-between mt-3">
+                  <button class="view-details-btn" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
+                    <i class="fas fa-info-circle me-1"></i> Ver detalles
+                  </button>
+                  <button class="view-details-btn" onclick="handlePayment(${offer.id})">
+                    <i class="fas fa-credit-card me-1"></i> Gestionar pago
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -107,6 +112,33 @@ function loadAllOffers() {
       `;
       container.innerHTML = "";
     });
+}
+const stripe = Stripe('pk_test_51RR6eVIVlXlM0oyWwyDleQAXhenoCdq4fVVgZhOmxNkb0fWby6kr061zrD2pL52wtS0MtfMw5pfnuM7FCzPCYPyp007vNmzU4m');
+async function handlePayment(offerId) {
+  try {
+    const response = await fetch('http://localhost:8080/pago/crear-sesion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ offerId }),  // envías solo el id
+    });
+
+    if (!response.ok) {
+      throw new Error('Error en la creación de sesión');
+    }
+
+    const data = await response.json();
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: data.sessionId,
+    });
+
+    if (result.error) {
+      console.error(result.error.message);
+    }
+
+  } catch (error) {
+    console.error('Error iniciando pago:', error);
+  }
 }
 const loadingModalEl = document.getElementById('loadingModal');
 const bsLoadingModal = bootstrap.Modal.getInstance(loadingModalEl) || new bootstrap.Modal(loadingModalEl, {
@@ -153,7 +185,7 @@ function loadRestaurantDetails(encodedName, offerIndex) {
 
   bsLoadingModal.show();
 
-  fetch(`http://localhost:9000/locations/search?query=${encodedName}`)
+  fetch(`http://localhost:8080/locations/search?query=${encodedName}`)
     .then(response => {
       if (!response.ok) throw new Error("No se pudieron cargar los detalles del restaurante");
       return response.json();
@@ -237,9 +269,14 @@ function openOfferModal(restaurantData, offerIndex) {
         <p><strong><i class="fas fa-map-marker-alt"></i> Dirección:</strong></p>
         <p>${address}</p>
         ${cuisineTags ? `<p><strong><i class="fas fa-utensils"></i> Cocina:</strong></p><div class="cuisine-tags mb-3">${cuisineTags}</div>` : ""}
-        <a href="https://www.google.com/maps/search/${encodeURIComponent(restaurantData.name)}+${encodeURIComponent(address)}" target="_blank" class="google-maps-btn">
-          <i class="fas fa-map-marker-alt"></i> Ver en Google Maps
-        </a>
+        <div class="d-flex justify-content-between mt-3">
+          <a href="https://www.google.com/maps/search/${encodeURIComponent(restaurantData.name)}+${encodeURIComponent(address)}" target="_blank" class="google-maps-btn">
+            <i class="fas fa-map-marker-alt"></i> Ver en Google Maps
+          </a>
+          <button class="view-details-btn" onclick="handlePayment(${offer.id})">
+            <i class="fas fa-credit-card me-1"></i> Gestionar pago
+          </button>
+        </div>
       </div>
     </div>
   `;

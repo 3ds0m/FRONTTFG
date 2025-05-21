@@ -20,7 +20,7 @@ function loadFeaturedOffer() {
   `;
   
   // Obtener las ofertas del endpoint
-  fetch("http://localhost:9000/listaofertas")
+  fetch("https://tfg-zbc8.onrender.com/listaofertas")
     .then(response => {
       if (!response.ok) throw new Error("No se pudieron cargar las ofertas");
       return response.json();

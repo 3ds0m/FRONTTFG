@@ -5,7 +5,7 @@ import { initOffers } from './offers.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Cargar todos los restaurantes desde el nuevo endpoint
-  fetch("http://localhost:9000/listarestaurantes")
+  fetch("https://tfg-zbc8.onrender.com/listarestaurantes")
     .then(response => {
       if (!response.ok) throw new Error("No se pudo cargar los datos de restaurantes");
       return response.json();
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
       initMap(window.restaurantsData);
       
       // Cargar restaurantes lowcost para la sección específica
-      fetch("http://localhost:9000/listalowcost")
+      fetch("https://tfg-zbc8.onrender.com/listalowcost")
         .then(response => {
           if (!response.ok) throw new Error("No se pudo cargar los datos de restaurantes económicos");
           return response.json();

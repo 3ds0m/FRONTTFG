@@ -8,7 +8,7 @@ let allRestaurantsData = []
 // Función para cargar los datos de restaurantes desde un archivo JSON
 async function loadRestaurantsData() {  
   try {
-    const response = await fetch("http://localhost:9000/listarestaurantes")
+    const response = await fetch("https://tfg-zbc8.onrender.com/listarestaurantes")
     console.log("Response:", response)
     if (!response.ok) {
       throw new Error("Error al cargar el archivo JSON")
