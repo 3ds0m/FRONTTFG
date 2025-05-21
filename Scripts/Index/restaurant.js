@@ -1,42 +1,42 @@
-import { generateRatingStars, displayPriceLevel, shuffleArray } from "./utils.js";
-
+import { generateRatingStars, displayPriceLevel, shuffleArray } from "./utils.js"
 export function initRestaurants(allRestaurantsData, lowCostRestaurantsData) {
   // Si no hay datos de lowcost, filtrar de todos los restaurantes
-  const lowCostData = lowCostRestaurantsData && lowCostRestaurantsData.length > 0 
-    ? lowCostRestaurantsData 
-    : allRestaurantsData.filter(r => r.priceLevel === "$" || r.priceLevel === "$$" || r.priceLevel === "$ - $$");
-  
-  createRestaurantCards(lowCostData); // Crea las tarjetas iniciales
-  getRandomRestaurant(allRestaurantsData); // Muestra el restaurante aleatorio por defecto
+  const lowCostData =
+    lowCostRestaurantsData && lowCostRestaurantsData.length > 0
+      ? lowCostRestaurantsData
+      : allRestaurantsData.filter((r) => r.priceLevel === "$" || r.priceLevel === "$$" || r.priceLevel === "$ - $$")
+
+  createRestaurantCards(lowCostData) // Crea las tarjetas iniciales
+  getRandomRestaurant(allRestaurantsData) // Muestra el restaurante aleatorio por defecto
 
   // Agregar eventos al botón de restaurante aleatorio
-  document.getElementById("select-random-btn")?.addEventListener("click", () => getRandomRestaurant(allRestaurantsData));
+  document.getElementById("select-random-btn")?.addEventListener("click", () => getRandomRestaurant(allRestaurantsData))
 
   // Configurar funciones globales
-  window.openRestaurantModal = openRestaurantModal;
-  window.navigateToCuisine = navigateToCuisine;
+  window.openRestaurantModal = openRestaurantModal
+  window.navigateToCuisine = navigateToCuisine
 }
 
 function createRestaurantCards(data) {
-  const container = document.getElementById("restaurant-cards");
-  if (!container) return;
+  const container = document.getElementById("restaurant-cards")
+  if (!container) return
 
-  container.innerHTML = "";
+  container.innerHTML = ""
 
   // Mostrar mensaje si no hay restaurantes de bajo costo
   if (data.length === 0) {
-    container.innerHTML = `<div class="col-12"><div class="alert alert-info">No encontramos restaurantes económicos en este momento.</div></div>`;
-    return;
+    container.innerHTML = `<div class="col-12"><div class="alert alert-info">No encontramos restaurantes económicos en este momento.</div></div>`
+    return
   }
 
   // Barajar y tomar los primeros 4 restaurantes
-  const shuffled = shuffleArray([...data]).slice(0, 4);
-  window.currentLowCostRestaurants = shuffled;
+  const shuffled = shuffleArray([...data]).slice(0, 4)
+  window.currentLowCostRestaurants = shuffled
 
   // Crear las tarjetas de restaurante
   shuffled.forEach((restaurant, index) => {
     container.innerHTML += `
-      <div class="col-md-6 mb-3">
+      <div class="col-6 mb-3">
         <div class="restaurant-card-wrapper">
           <div class="restaurant-card">
             <div class="restaurant-card-img">
@@ -60,28 +60,32 @@ function createRestaurantCards(data) {
           </div>
         </div>
       </div>
-    `;
-  });
+    `
+  })
 
-  createRestaurantModals(shuffled, "lowcost");
+  createRestaurantModals(shuffled, "lowcost")
 }
 
 function createRestaurantModals(restaurants, type) {
-  const container = document.querySelector(".modal-container") || document.body;
+  const container = document.querySelector(".modal-container") || document.body
 
   // Eliminar modales anteriores
-  document.querySelectorAll(`.modal-${type}`).forEach((el) => el.remove());
+  document.querySelectorAll(`.modal-${type}`).forEach((el) => el.remove())
 
   // Crear modales para cada restaurante
   restaurants.forEach((restaurant, index) => {
     // Adaptar a la nueva estructura de datos
-    const cuisineTypes = restaurant.cuisine_type || "";
-    const cuisineTags = cuisineTypes.split(", ")
+    const cuisineTypes = restaurant.cuisine_type || ""
+    const cuisineTags = cuisineTypes
+      .split(", ")
       .map((c) => `<span class="cuisine-tag" onclick="navigateToCuisine('${c}')">${c}</span>`)
-      .join("");
+      .join("")
 
-    const address = restaurant.addressString || 
-                   (restaurant.street1 ? `${restaurant.street1}, ${restaurant.city} ${restaurant.postalcode}` : "Dirección no disponible");
+    const address =
+      restaurant.addressString ||
+      (restaurant.street1
+        ? `${restaurant.street1}, ${restaurant.city} ${restaurant.postalcode}`
+        : "Dirección no disponible")
 
     container.insertAdjacentHTML(
       "beforeend",
@@ -115,29 +119,30 @@ function createRestaurantModals(restaurants, type) {
           </div>
         </div>
       </div>
-    `
-    );
-  });
+    `,
+    )
+  })
 }
 
 function openRestaurantModal(index, type) {
-  const modal = new bootstrap.Modal(document.getElementById(`restaurantModal-${type}-${index}`));
-  modal.show();
+  const modal = new bootstrap.Modal(document.getElementById(`restaurantModal-${type}-${index}`))
+  modal.show()
 }
 
 function getRandomRestaurant(data) {
-  const r = data[Math.floor(Math.random() * data.length)]; // Selecciona un restaurante aleatorio
-  const box = document.getElementById("random-restaurant-box");
+  const r = data[Math.floor(Math.random() * data.length)] // Selecciona un restaurante aleatorio
+  const box = document.getElementById("random-restaurant-box")
 
-  if (!box) return;
+  if (!box) return
 
   // Adaptar a la nueva estructura de datos
-  const cuisineTypes = r.cuisine_type || "";
-  const cuisineTags = cuisineTypes.split(", ")
+  const cuisineTypes = r.cuisine_type || ""
+  const cuisineTags = cuisineTypes
+    .split(", ")
     .map((c) => `<span class="cuisine-tag" onclick="navigateToCuisine('${c}')">${c}</span>`)
-    .join("");
+    .join("")
 
-  const address = r.street1 || "Dirección no disponible";
+  const address = r.street1 || "Dirección no disponible"
 
   box.innerHTML = `
     <div class="random-restaurant-img">
@@ -153,10 +158,10 @@ function getRandomRestaurant(data) {
         <i class="fas fa-map-marker-alt"></i> Ver en mapa
       </a>
     </div>
-  `;
+  `
 }
 
 // Modificar la función navigateToCuisine para que redirija con el parámetro de cocina
 function navigateToCuisine(cuisine) {
-  window.location.href = `Cocinas.html?cuisine=${encodeURIComponent(cuisine)}`;
+  window.location.href = `Cocinas.html?cuisine=${encodeURIComponent(cuisine)}`
 }

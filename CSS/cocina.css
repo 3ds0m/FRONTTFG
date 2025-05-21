@@ -59,7 +59,7 @@ h6 {
   font-size: 1.1rem;
 }
 
-/* Estilos del header */header {
+/* Estilos del header */ header {
   background-color: white;
   box-shadow: var(--shadow);
   z-index: 1000;
@@ -88,6 +88,54 @@ header .nav-link {
 header .nav-link:hover {
   color: var(--primary);
   background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* Estilos para la navegación responsive */
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  color: var(--dark);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2841, 47, 54, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--primary);
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: white;
+    padding: 1rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 0.5rem;
+  }
+
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.75rem;
+    margin: 0.2rem 0;
+  }
 }
 
 /* Estilos del hero */

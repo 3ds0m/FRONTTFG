@@ -94,6 +94,54 @@ header .nav-link:hover {
   background-color: rgba(255, 107, 107, 0.1);
 }
 
+/* Estilos para la navegación responsive */
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  color: var(--dark);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2841, 47, 54, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--primary);
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: white;
+    padding: 1rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-top: 0.5rem;
+  }
+
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.75rem;
+    margin: 0.2rem 0;
+  }
+}
+
 /* Estilos del hero */
 .hero {
   padding: 5rem 0;
@@ -629,19 +677,22 @@ section {
   background: #fff;
 }
 
-.offer-detail-section, .restaurant-detail-section {
+.offer-detail-section,
+.restaurant-detail-section {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.offer-detail-img, .restaurant-detail-img {
+.offer-detail-img,
+.restaurant-detail-img {
   position: relative;
   height: 250px;
   overflow: hidden;
 }
 
-.offer-detail-img img, .restaurant-detail-img img {
+.offer-detail-img img,
+.restaurant-detail-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -660,7 +711,8 @@ section {
   z-index: 2;
 }
 
-.offer-detail-content, .restaurant-detail-content {
+.offer-detail-content,
+.restaurant-detail-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -702,8 +754,9 @@ section {
   .offer-restaurant-details .row {
     flex-direction: column;
   }
-  
-  .offer-detail-section, .restaurant-detail-section {
+
+  .offer-detail-section,
+  .restaurant-detail-section {
     margin-bottom: 20px;
   }
 }
@@ -778,6 +831,64 @@ footer {
   }
 }
 
+/* Mejoras para la sección low-cost en móviles */
+@media (max-width: 768px) {
+  #map {
+    height: 300px;
+  }
+
+  .restaurant-card {
+    flex-direction: column;
+  }
+
+  .restaurant-card-img {
+    width: 100%;
+    height: 180px;
+    position: relative;
+  }
+
+  .restaurant-card-content {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .top-restaurants,
+  .map-container {
+    padding: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #map {
+    height: 250px;
+  }
+
+  .restaurant-card-img {
+    height: 150px;
+  }
+
+  .restaurant-card-title {
+    font-size: 1rem;
+  }
+
+  .view-details-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .section-header p {
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 576px) {
   .hero h1 {
     font-size: 1.8rem;
@@ -806,5 +917,60 @@ footer {
 
   .restaurant-card-title {
     font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Ajustes para tarjetas de restaurantes en móviles */
+  .restaurant-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .restaurant-card-img {
+    width: 100%;
+    height: 120px;
+    position: relative;
+  }
+
+  .restaurant-card-content {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  .restaurant-card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .rating-stars {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .rating-stars .ms-1 {
+    font-size: 0.8rem;
+  }
+
+  .price-level {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .view-details-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Ajustar el espacio entre las tarjetas */
+  #restaurant-cards.row {
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+
+  #restaurant-cards .col-6 {
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
