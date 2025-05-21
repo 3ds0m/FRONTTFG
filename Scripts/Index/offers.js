@@ -66,7 +66,7 @@ function loadFeaturedOffer() {
               <span class="new-price">${randomOffer.new_price}€</span>
             </div>
             <p class="offer-valid">Válido hasta: ${endDate}</p>
-            <a href="ofertas.html" class="btn btn-primary w-100">
+            <a href="Ofertas.html" class="btn btn-primary w-100">
               <i class="fas fa-tag me-2"></i> Ver todas las ofertas
             </a>
           </div>
