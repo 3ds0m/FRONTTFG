@@ -1,7 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Cargar todas las ofertas al iniciar la página
   loadAllOffers();
-  
+
+  // Escucha los cambios del filtro
+  const filterSelect = document.getElementById("filter-select");
+  if (filterSelect) {
+    filterSelect.addEventListener("change", () => {
+      const selectedFilter = filterSelect.value;
+      sortOffers(selectedFilter);
+    });
+  }
   // Agregar evento al botón de recargar ofertas
   document.getElementById("reload-offers-btn")?.addEventListener("click", loadAllOffers);
   
@@ -29,7 +37,7 @@ function loadAllOffers() {
   statusContainer.innerHTML = "";
   console.log("listaofertas")
   // Obtener las ofertas del endpoint
-  fetch("http://localhost:8080/listaofertas")
+  fetch("https://tfg-zbc8.onrender.com/listaofertas")
   
     .then(response => {
       if (!response.ok) throw new Error("No se pudieron cargar las ofertas");
@@ -116,7 +124,7 @@ function loadAllOffers() {
 const stripe = Stripe('pk_test_51RR6eVIVlXlM0oyWwyDleQAXhenoCdq4fVVgZhOmxNkb0fWby6kr061zrD2pL52wtS0MtfMw5pfnuM7FCzPCYPyp007vNmzU4m');
 async function handlePayment(offerId) {
   try {
-    const response = await fetch('http://localhost:8080/pago/crear-sesion', {
+    const response = await fetch('https://tfg-zbc8.onrender.com/pago/crear-sesion', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ offerId }),  // envías solo el id
@@ -185,7 +193,7 @@ function loadRestaurantDetails(encodedName, offerIndex) {
 
   bsLoadingModal.show();
 
-  fetch(`http://localhost:8080/locations/search?query=${encodedName}`)
+  fetch(`https://tfg-zbc8.onrender.com/locations/search?query=${encodedName}`)
     .then(response => {
       if (!response.ok) throw new Error("No se pudieron cargar los detalles del restaurante");
       return response.json();
@@ -286,7 +294,73 @@ function openOfferModal(restaurantData, offerIndex) {
   const bsOfferModal = new bootstrap.Modal(offerModal);
   bsOfferModal.show();
 }
+function sortOffers(type) {
+  if (!Array.isArray(window.offersData)) return;
 
+  const sorted = [...window.offersData]; // copiar para no modificar el original
+
+  switch (type) {
+    case 'price':
+      sorted.sort((a, b) => a.new_price - b.new_price);
+      break;
+    case 'name':
+      sorted.sort((a, b) =>
+        a.title.trim().localeCompare(b.title.trim(), 'es', { sensitivity: 'base' })
+      );
+    break;
+    case 'date':
+      sorted.sort((a, b) => new Date(a.finOferta) - new Date(b.finOferta));
+      break;
+    default:
+      break;
+  }
+
+  renderOffers(sorted);
+}
+function renderOffers(offersArray) {
+  const container = document.getElementById("all-offers-container");
+  const statusContainer = document.getElementById("offers-status");
+
+  container.innerHTML = "";
+
+  offersArray.forEach((offer, index) => {
+    const discountPercent = offer.percent ||
+      Math.round(((offer.old_price - offer.new_price) / offer.old_price) * 100);
+
+    const endDate = offer.finOferta ? new Date(offer.finOferta).toLocaleDateString() : 'No especificado';
+
+    container.innerHTML += `
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="offer-card">
+          <div class="offer-discount">-${discountPercent}%</div>
+          <div class="offer-img">
+            <img src="${offer.image || 'img/default-offer.jpg'}"
+                 alt="${offer.title}"
+                 onerror="this.src='img/default-offer.jpg'">
+          </div>
+          <div class="offer-content">
+            <h5 class="offer-title">${offer.title}</h5>
+            <p class="offer-location">${offer.locationName}</p>
+            <p class="offer-description">${truncateText(offer.description, 80)}</p>
+            <div class="offer-price">
+              <span class="old-price">${offer.old_price}€</span>
+              <span class="new-price">${offer.new_price}€</span>
+            </div>
+            <p class="offer-valid">Válido hasta: ${endDate}</p>
+            <div class="d-flex justify-content-between mt-3">
+              <button class="view-details-btn" onclick="loadRestaurantDetails('${offer.locationName}', ${index})">
+                <i class="fas fa-info-circle me-1"></i> Ver detalles
+              </button>
+              <button class="view-details-btn" onclick="handlePayment(${offer.id})">
+                <i class="fas fa-credit-card me-1"></i> Gestionar pago
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
 // Funciones auxiliares
 function truncateText(text, maxLength) {
   if (!text) return '';

@@ -44,6 +44,7 @@
       </div>
     </div>
   </section>
+  
 
   <!-- LISTADO DE OFERTAS -->
   <section class="offers-list py-5">
@@ -53,20 +54,24 @@
         <p>Aprovecha estos descuentos exclusivos en los mejores restaurantes</p>
       </div>
       
-      <div class="row mb-4">
-        <div class="col-12">
-          <div class="offers-filter d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex gap-2">
-              <button id="reload-offers-btn" class="btn btn-primary">
-                <i class="fas fa-sync-alt me-2"></i> Actualizar Ofertas
-              </button>
-              <a href="index.html" class="btn btn-outline-secondary">
-                <i class="fas fa-home me-2"></i> Volver al Inicio
-              </a>
-            </div>
-          </div>
-        </div>
+    <div class="offers-filter d-flex justify-content-between align-items-center flex-wrap">
+      <div class="d-flex gap-2">
+        <button id="reload-offers-btn" class="btn btn-primary">
+          <i class="fas fa-sync-alt me-2"></i> Actualizar Ofertas
+        </button>
+        <a href="index.html" class="btn btn-outline-secondary">
+          <i class="fas fa-home me-2"></i> Volver al Inicio
+        </a>
       </div>
+      <div class="d-flex gap-2 mt-3 mt-md-0">
+        <select id="filter-select" class="form-select">
+          <option value="">Ordenar por...</option>
+          <option value="price">Precio</option>
+          <option value="name">Nombre</option>
+          <option value="date">Fecha</option>
+        </select>
+      </div>
+    </div>
       
       <!-- Contenedor para el mensaje de carga o error -->
       <div id="offers-status" class="mb-4"></div>
