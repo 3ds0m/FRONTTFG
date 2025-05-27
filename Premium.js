@@ -11,7 +11,7 @@ class PremiumManager {
 
     init() {
         // Verificar si estamos en la página de login
-        if (window.location.pathname.includes('login.html')) {
+        if (window.location.pathname.includes('Login.html')) {
             this.initLoginPage();
         } else {
             // Verificar sesión en otras páginas
@@ -162,7 +162,7 @@ class PremiumManager {
             this.currentUser = null;
             
             // Si estamos en login.html, mostrar formularios
-            if (window.location.pathname.includes('login.html')) {
+            if (window.location.pathname.includes('Login.html')) {
                 this.showLogin();
             } else {
                 // Si estamos en otra página, recargar para actualizar el menú
@@ -183,14 +183,14 @@ class PremiumManager {
             this.currentUser = user;
             
             // Si estamos en login.html, mostrar mensaje de éxito
-            if (window.location.pathname.includes('login.html')) {
+            if (window.location.pathname.includes('Login.html')) {
                 this.showSuccessMessage(user);
             }
             
         } catch (error) {
             localStorage.removeItem('sessionToken');
             this.currentUser = null;
-            if (window.location.pathname.includes('login.html')) {
+            if (window.location.pathname.includes('Login.html')) {
                 this.showLogin();
             }
         }
@@ -249,7 +249,7 @@ class PremiumManager {
         if (!this.currentUser) {
             // Redirigir a login si no está logueado
             if (confirm('Debes iniciar sesión para agregar favoritos. ¿Quieres ir a la página de login?')) {
-                window.location.href = 'login.html';
+                window.location.href = 'Login.html';
             }
             return false;
         }

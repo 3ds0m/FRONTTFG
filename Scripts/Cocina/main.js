@@ -28,7 +28,7 @@ function initUserMenu() {
   if( !premiumManager.isLoggedIn) {
     // Usuario no logueado - mostrar botón de login
     userMenuContainer.innerHTML = `
-      <a href="login.html" class="login-btn">
+      <a href="Login.html" class="login-btn">
         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
       </a>
     `;
@@ -188,7 +188,7 @@ async function handleFavoriteClick(event, locationId, restaurantName) {
 
     const confirmLoginBtn = document.getElementById('confirmLoginBtn');
     confirmLoginBtn.onclick = () => {
-      window.location.href = 'login.html';
+      window.location.href = 'Login.html';
     };
     return;
   }

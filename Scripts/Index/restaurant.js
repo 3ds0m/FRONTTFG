@@ -215,7 +215,7 @@ async function handleFavoriteClick(event, locationId, restaurantName) {
 
     const confirmLoginBtn = document.getElementById('confirmLoginBtn');
     confirmLoginBtn.onclick = () => {
-      window.location.href = 'login.html';
+      window.location.href = 'Login.html';
     };
     return;
   }

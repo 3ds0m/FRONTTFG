@@ -91,7 +91,7 @@ export async function initUserMenu() {
   } else {
     // Usuario no logueado - mostrar botón de login
     userMenuContainer.innerHTML = `
-      <a href="login.html" class="login-btn">
+      <a href="Login.html" class="login-btn">
         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
       </a>
     `;
