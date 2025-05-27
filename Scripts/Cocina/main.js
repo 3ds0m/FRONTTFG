@@ -1,5 +1,5 @@
 import { generateRatingStars, displayPriceLevel, showError } from "./utils.js"
-
+import { premiumManager } from "../../Premium.js"
 // Variables globales para almacenar datos y estado
 let currentCuisineRestaurants = []
 let allRestaurantsData = []
@@ -7,6 +7,7 @@ let userFavorites = []
 
 // Función para inicializar el menú de usuario
 function initUserMenu() {
+  window.premiumManager = premiumManager
   const userMenuContainer = document.getElementById('user-menu-container');
   if (!userMenuContainer) return;
   if (premiumManager.isLoggedIn) {
@@ -429,7 +430,6 @@ function navigateToCuisine(cuisine) {
   url.searchParams.set("cuisine", cuisine) // Agregar el tipo de cocina como parámetro en la URL
   window.location.href = url.toString() // Redirigir a la nueva URL
 }
-window.premiumManager = premiumManager
 // Modificar la función para inicializar la página
 document.addEventListener("DOMContentLoaded", async () => {
   // Configurar funciones globales para que sean accesibles desde HTML
