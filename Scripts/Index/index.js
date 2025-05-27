@@ -1,9 +1,11 @@
 import { initMap } from './map.js';
 import { initRestaurants } from './restaurant.js';
-import { showError } from './utils.js';
+import { showError , initUserMenu , loadUserFavorites , toggleUserDropdown} from './utils.js';
 import { initOffers } from './offers.js';
-
 document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("userReady", () => {
+    initUserMenu();
+  });
   // Cargar todos los restaurantes desde el nuevo endpoint
   fetch("https://tfg-zbc8.onrender.com/listarestaurantes")
     .then(response => {
@@ -42,3 +44,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   initOffers();
 });
+
+window.toggleUserDropdown = toggleUserDropdown;

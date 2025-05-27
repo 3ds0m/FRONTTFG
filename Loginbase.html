@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Demo sesión con token</title>
+</head>
+<body>
+  <h1>Login</h1>
+
+  <!-- Formulario Login -->
+  <div id="login-form">
+    <input type="text" id="usernameOrEmail" placeholder="Usuario o Email" />
+    <input type="password" id="password" placeholder="Contraseña" /><br>
+    <button id="btn-login">Iniciar sesión</button>
+    <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
+  </div>
+
+  <!-- Formulario Registro (oculto por defecto) -->
+  <div id="register-form" style="display:none;">
+    <input type="text" id="register-username" placeholder="Usuario" /><br>
+    <input type="email" id="register-email" placeholder="Correo electrónico" /><br>
+    <input type="password" id="register-password" placeholder="Contraseña" /><br>
+    <button id="btn-register">Registrarse</button>
+    <p>¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
+  </div>
+
+  <!-- Información usuario y favoritos -->
+  <div id="user-info" style="display:none;">
+    <h2>Bienvenido, <span id="user-name"></span></h2>
+    <button id="btn-logout">Cerrar sesión</button>
+    <h3>Favoritos</h3>
+    <ul id="favorites-list"></ul>
+
+    <h3>Agregar favorito</h3>
+    <input type="text" id="new-favorite-id" placeholder="ID del restaurante" />
+    <button id="btn-add-favorite">Agregar favorito</button>
+  </div>
+
+  <script>
+    const API_BASE = "https://tfg-zbc8.onrender.com/api";
+
+    window.onload = () => {
+      const token = localStorage.getItem('sessionToken');
+      if (token) {
+        validarSesion(token);
+      }
+    };
+
+    // Mostrar formulario de registro
+    document.getElementById('show-register').onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('register-form').style.display = 'block';
+    };
+
+    // Mostrar formulario de login
+    document.getElementById('show-login').onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('login-form').style.display = 'block';
+    };
+
+    // Registro
+    document.getElementById('btn-register').onclick = () => {
+      const username = document.getElementById('register-username').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+
+      if (!username || !email || !password) {
+        alert('Por favor, completa todos los campos');
+        return;
+      }
+
+      fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ username, email, password })
+      })
+      .then(res => {
+        if (!res.ok) return res.text().then(text => { throw new Error(text) });
+        return res.text();
+      })
+      .then(msg => {
+        alert(msg);
+        // Después de registrarse mostrar login y limpiar campos registro
+        document.getElementById('register-username').value = '';
+        document.getElementById('register-email').value = '';
+        document.getElementById('register-password').value = '';
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+      })
+      .catch(err => alert(`Error: ${err.message}`));
+    };
+
+    // Login
+    document.getElementById('btn-login').onclick = () => {
+      const usernameOrEmail = document.getElementById('usernameOrEmail').value.trim();
+      const password = document.getElementById('password').value;
+
+      fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({usernameOrEmail , password})
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Login fallido');
+        return res.json();
+      })
+      .then(data => {
+        localStorage.setItem('sessionToken', data.token);
+        validarSesion(data.token);
+      })
+      .catch(() => alert('Usuario o contraseña incorrectos'));
+    };
+
+    // Logout
+    document.getElementById('btn-logout').onclick = () => {
+      const token = localStorage.getItem('sessionToken');
+      if (!token) return;
+
+      fetch(`${API_BASE}/auth/logout`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token})
+      }).finally(() => {
+        localStorage.removeItem('sessionToken');
+        mostrarLogin();
+      });
+    };
+
+    // Mostrar usuario y favoritos
+    function mostrarUsuario(user) {
+      document.getElementById('user-name').textContent = user.username;
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('user-info').style.display = 'block';
+    }
+
+    // Mostrar login
+    function mostrarLogin() {
+      document.getElementById('login-form').style.display = 'block';
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('user-info').style.display = 'none';
+      document.getElementById('favorites-list').innerHTML = '';
+    }
+
+    // Validar sesión con token
+    function validarSesion(token) {
+      fetch(`${API_BASE}/auth/validate?token=${token}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Sesión inválida');
+          return res.json();
+        })
+        .then(user => {
+          mostrarUsuario(user);
+          cargarFavoritos(token);
+        })
+        .catch(() => {
+          localStorage.removeItem('sessionToken');
+          mostrarLogin();
+        });
+    }
+
+    // Cargar favoritos
+    function cargarFavoritos(token) {
+      fetch(`${API_BASE}/auth/user/favorites`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('No autorizado');
+        return res.json();
+      })
+      .then(favorites => {
+        const ul = document.getElementById('favorites-list');
+        ul.innerHTML = '';
+        favorites.forEach(fav => {
+          const li = document.createElement('li');
+          li.textContent = fav.name;
+
+          const btnEliminar = document.createElement('button');
+          btnEliminar.textContent = 'Eliminar';
+          btnEliminar.style.marginLeft = '10px';
+          btnEliminar.onclick = () => eliminarFavorito(token, fav.locationId);
+
+          li.appendChild(btnEliminar);
+          ul.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Error cargando favoritos:', err);
+      });
+    }
+
+    // Agregar favorito
+    document.getElementById('btn-add-favorite').onclick = () => {
+      const token = localStorage.getItem('sessionToken');
+      if (!token) {
+        alert('Debe iniciar sesión');
+        return;
+      }
+      const locationId = document.getElementById('new-favorite-id').value.trim();
+      if (!locationId) {
+        alert('Ingrese un ID válido');
+        return;
+      }
+
+      fetch(`${API_BASE}/user/favorites/add/${locationId}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al agregar favorito');
+        return res.text();
+      })
+      .then(msg => {
+        alert(msg);
+        cargarFavoritos(token);
+        document.getElementById('new-favorite-id').value = '';
+      })
+      .catch(err => {
+        alert('No se pudo agregar favorito');
+        console.error(err);
+      });
+    };
+
+    // Eliminar favorito
+    function eliminarFavorito(token, locationId) {
+      fetch(`${API_BASE}/user/favorites/remove/${locationId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Error al eliminar favorito');
+        return res.text();
+      })
+      .then(msg => {
+        alert(msg);
+        cargarFavoritos(token);
+      })
+      .catch(err => {
+        alert('No se pudo eliminar favorito');
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>

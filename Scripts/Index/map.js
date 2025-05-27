@@ -23,7 +23,7 @@ export function initMap(restaurantsData) {
 
         marker.bindPopup(`
           <div style="text-align: center; min-width: 200px;">
-            <img src="${restaurant.image || 'img/default-restaurant.jpg'}" 
+            <img src="${restaurant.image || 'default-restaurant.png'}" 
                  alt="${restaurant.name}" 
                  style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">
             <h6>${restaurant.name}</h6>

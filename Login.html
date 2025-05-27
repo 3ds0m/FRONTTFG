@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MadridLocal</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/login.css">
+</head>
+<body>
+    <a href="cocinas.html" class="back-to-site">
+        <i class="fas fa-arrow-left"></i> Volver al sitio
+    </a>
+
+    <!-- Formularios de Login/Registro -->
+    <div id="auth-container" class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-utensils"></i> Madrid<span>Local</span></h1>
+            <p class="mb-0">Accede a tu cuenta para guardar tus restaurantes favoritos</p>
+        </div>
+        
+        <div class="login-body">
+            <!-- Formulario Login -->
+            <div id="login-form">
+                <h3 class="text-center mb-4">Iniciar Sesión</h3>
+                <form>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="usernameOrEmail" placeholder="Usuario o Email" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="button" id="btn-login" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <p>¿No tienes cuenta? <a href="#" id="show-register" class="text-decoration-none">Regístrate aquí</a></p>
+                </div>
+            </div>
+
+            <!-- Formulario Registro -->
+            <div id="register-form" style="display:none;">
+                <h3 class="text-center mb-4">Crear Cuenta</h3>
+                <form>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="register-username" placeholder="Usuario" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="register-email" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="register-password" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="button" id="btn-register" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <p>¿Ya tienes cuenta? <a href="#" id="show-login" class="text-decoration-none">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje de éxito después del login -->
+    <div id="success-container" class="success-message" style="display:none;">
+        <h2><i class="fas fa-check-circle"></i> ¡Bienvenido!</h2>
+        <p>Has iniciado sesión correctamente.</p>
+        <a href="cocinas.html" class="btn">
+            <i class="fas fa-utensils"></i> Explorar todos nuestros restaurantes
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="Premium.js"></script>
+</body>
+</html>

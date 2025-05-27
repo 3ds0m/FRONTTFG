@@ -14,7 +14,7 @@ export function generateRatingStars(rating) {
 export function displayPriceLevel(level) {
   // Si el nivel de precio es N/A, mostrar "Sorpresa"
   if (level === "N/A") {
-    return `<span class="price-level" style="background: var(--primary);">Sorpresa</span>`
+    return `<span class="price-level" style="background: var(--primary);">Precio no disponible</span>`
   }
 
   const ranges = {
@@ -67,5 +67,71 @@ export function getCoordinatesFromAddress(addressObj) {
   return {
     lat: center[0] + latOffset,
     lng: center[1] + lngOffset,
+  }
+}
+export async function initUserMenu() {
+  const userMenuContainer = document.getElementById('user-menu-container');
+  if (!userMenuContainer) return;
+  
+  if (premiumManager.isLoggedIn) {
+    // Usuario logueado - mostrar menú de usuario
+    userMenuContainer.innerHTML = `
+      <div class="user-menu">
+        <button class="user-btn" onclick="toggleUserDropdown()">
+          <i class="fas fa-user"></i> ${premiumManager.user.username}
+        </button>
+        <div id="user-dropdown" class="user-dropdown">
+          <a href="#" onclick="showFavorites()"><i class="fas fa-heart"></i> Ver Favoritos</a>
+          <a href="#" onclick="premiumManager.logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </div>
+      </div>
+    `;
+    // Cargar favoritos del usuario
+    await loadUserFavorites();
+  } else {
+    // Usuario no logueado - mostrar botón de login
+    userMenuContainer.innerHTML = `
+      <a href="login.html" class="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+      </a>
+    `;
+  }
+}
+
+// Función para mostrar favoritos (placeholder para futura implementación)
+function showFavorites() {
+  alert('Funcionalidad de ver favoritos será implementada en una ventana separada próximamente.');
+  // Cerrar dropdown
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) {
+    dropdown.classList.remove('show');
+  }
+}
+
+// Hacer la función showFavorites disponible globalmente
+window.showFavorites = showFavorites;
+export async function loadUserFavorites() {
+  if (!premiumManager.isLoggedIn) {
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('sessionToken');
+    const response = await fetch(`https://tfg-zbc8.onrender.com/api/user/favorites`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      userFavorites = await response.json();
+      updateFavoriteButtons();
+    }
+  } catch (error) {
+    console.error('Error loading favorites:', error);
+  }
+}
+export async function toggleUserDropdown() {
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('show');
   }
 }

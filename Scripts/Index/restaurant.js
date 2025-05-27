@@ -1,5 +1,7 @@
 import { generateRatingStars, displayPriceLevel, shuffleArray } from "./utils.js"
+let userFavorites = []
 export function initRestaurants(allRestaurantsData, lowCostRestaurantsData) {
+
   // Si no hay datos de lowcost, filtrar de todos los restaurantes
   const lowCostData =
     lowCostRestaurantsData && lowCostRestaurantsData.length > 0
@@ -35,14 +37,24 @@ function createRestaurantCards(data) {
 
   // Crear las tarjetas de restaurante
   shuffled.forEach((restaurant, index) => {
+    const isFavorite = userFavorites.includes(restaurant.locationId);
+    const favoriteClass = isFavorite ? 'active' : '';
+    const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+    const favoriteTitle = isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos';
     container.innerHTML += `
       <div class="col-6 mb-3">
         <div class="restaurant-card-wrapper">
           <div class="restaurant-card">
+            <button class="favorite-btn ${favoriteClass}"
+                    data-location-id="${restaurant.locationId}"
+                    onclick="handleFavoriteClick(event, '${restaurant.locationId}', '${restaurant.name}')"
+                    title="${favoriteTitle}">
+              <i class="${favoriteIcon}"></i>
+            </button>
             <div class="restaurant-card-img">
-              <img src="${restaurant.image || "img/default-restaurant.jpg"}" 
+              <img src="${restaurant.image || "default-restaurant.png"}" 
                    alt="${restaurant.name}" 
-                   onerror="this.src='img/default-restaurant.jpg'">
+                   onerror="this.src='default-restaurant.png'">
             </div>
             <div class="restaurant-card-content">
               <div>
@@ -86,7 +98,11 @@ function createRestaurantModals(restaurants, type) {
       (restaurant.street1
         ? `${restaurant.street1}, ${restaurant.city} ${restaurant.postalcode}`
         : "Dirección no disponible")
-
+    
+    const isFavorite = userFavorites.includes(restaurant.locationId);
+    const favoriteClass = isFavorite ? 'active' : '';
+    const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+    const favoriteTitle = isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos';
     container.insertAdjacentHTML(
       "beforeend",
       `
@@ -98,10 +114,16 @@ function createRestaurantModals(restaurants, type) {
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0">
+                <button class="favorite-btn ${favoriteClass}"
+                        data-location-id="${restaurant.locationId}"
+                        onclick="handleFavoriteClick(event, '${restaurant.locationId}', '${restaurant.name}')"
+                        title="${favoriteTitle}">
+                  <i class="${favoriteIcon}"></i>
+                </button>
               <div class="modal-restaurant-details">
                 <div class="modal-restaurant-img-container">
                   <div class="modal-restaurant-img">
-                    <img src="${restaurant.image || "img/default-restaurant.jpg"}" alt="${restaurant.name}" onerror="this.src='img/default-restaurant.jpg'">
+                    <img src="${restaurant.image || "default-restaurant.png"}" alt="${restaurant.name}" onerror="this.src='default-restaurant.png'">
                   </div>
                 </div>
                 <div class="modal-restaurant-content">
@@ -130,23 +152,32 @@ function openRestaurantModal(index, type) {
 }
 
 function getRandomRestaurant(data) {
-  const r = data[Math.floor(Math.random() * data.length)] // Selecciona un restaurante aleatorio
-  const box = document.getElementById("random-restaurant-box")
+  const r = data[Math.floor(Math.random() * data.length)]; // Restaurante aleatorio
+  const box = document.getElementById("random-restaurant-box");
+  if (!box) return;
 
-  if (!box) return
+  const isFavorite = userFavorites.includes(r.locationId);
+  const favoriteClass = isFavorite ? 'active' : '';
+  const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+  const favoriteTitle = isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos';
 
-  // Adaptar a la nueva estructura de datos
-  const cuisineTypes = r.cuisine_type || ""
+  const cuisineTypes = r.cuisine_type || "";
   const cuisineTags = cuisineTypes
     .split(", ")
     .map((c) => `<span class="cuisine-tag" onclick="navigateToCuisine('${c}')">${c}</span>`)
-    .join("")
+    .join("");
 
-  const address = r.street1 || "Dirección no disponible"
+  const address = r.street1 || "Dirección no disponible";
 
   box.innerHTML = `
     <div class="random-restaurant-img">
-      <img src="${r.image || "img/default-restaurant.jpg"}" alt="${r.name}" onerror="this.src='img/default-restaurant.jpg'">
+      <img src="${r.image || "default-restaurant.png"}" alt="${r.name}" onerror="this.src='default-restaurant.png'">
+      <button class="favorite-btn ${favoriteClass}"
+              data-location-id="${r.locationId}"
+              onclick="handleFavoriteClick(event, '${r.locationId}', '${r.name}')"
+              title="${favoriteTitle}">
+        <i class="${favoriteIcon}"></i>
+      </button>
     </div>
     <div class="random-restaurant-content">
       <h5>${r.name}</h5>
@@ -158,10 +189,68 @@ function getRandomRestaurant(data) {
         <i class="fas fa-map-marker-alt"></i> Ver en mapa
       </a>
     </div>
-  `
+  `;
 }
+
 
 // Modificar la función navigateToCuisine para que redirija con el parámetro de cocina
 function navigateToCuisine(cuisine) {
   window.location.href = `Cocinas.html?cuisine=${encodeURIComponent(cuisine)}`
 }
+async function handleFavoriteClick(event, locationId, restaurantName) {
+  event.stopPropagation();
+  event.preventDefault();
+  if (!premiumManager.isLoggedIn) {
+    // SOLUCION PROBLEMA 1: Asegurar que el modal de login tenga mayor z-index
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+      backdrop: 'static',
+      keyboard: false
+    });
+    
+    // Aumentar z-index del modal de login
+    const loginModalElement = document.getElementById('loginModal');
+    loginModalElement.style.zIndex = '1060';
+    
+    loginModal.show();
+
+    const confirmLoginBtn = document.getElementById('confirmLoginBtn');
+    confirmLoginBtn.onclick = () => {
+      window.location.href = 'login.html';
+    };
+    return;
+  }
+  const btn = event.currentTarget;
+  const icon = btn.querySelector('i');
+  const isActive = btn.classList.contains('active');
+
+  // Opcional: puedes mostrar un spinner si quieres feedback visual
+  btn.disabled = true;
+  icon.className = 'fas fa-spinner fa-spin';
+
+  let success = false;
+  try {
+    if (isActive) {
+      // Quitar favorito usando premiumManager
+      success = await window.premiumManager.removeFavoriteFromPage(locationId, restaurantName);
+      if (success) {
+        btn.classList.remove('active');
+        btn.title = 'Agregar a favoritos';
+        icon.className = 'far fa-heart';
+      }
+    } else {
+      // Agregar favorito usando premiumManager
+      success = await window.premiumManager.addFavoriteFromPage(locationId, restaurantName);
+      if (success) {
+        btn.classList.add('active');
+        btn.title = 'Eliminar de favoritos';
+        icon.className = 'fas fa-heart';
+      }
+    }
+  } catch (error) {
+    icon.className = isActive ? 'fas fa-heart' : 'far fa-heart';
+    console.error('Error handling favorite:', error);
+  } finally {
+    btn.disabled = false;
+  }
+}
+window.handleFavoriteClick = handleFavoriteClick;

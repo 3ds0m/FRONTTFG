@@ -1,15 +1,111 @@
 import { generateRatingStars, displayPriceLevel, showError } from "./utils.js"
-//import * as bootstrap from "bootstrap"
 
 // Variables globales para almacenar datos y estado
 let currentCuisineRestaurants = []
 let allRestaurantsData = []
+let userFavorites = []
+
+// Función para inicializar el menú de usuario
+function initUserMenu() {
+  const userMenuContainer = document.getElementById('user-menu-container');
+  if (!userMenuContainer) return;
+  if (premiumManager.isLoggedIn) {
+    // Usuario logueado - mostrar menú de usuario
+    userMenuContainer.innerHTML = `
+      <div class="user-menu">
+        <button class="user-btn" onclick="toggleUserDropdown()">
+          <i class="fas fa-user"></i> ${premiumManager.user.username}
+        </button>
+        <div id="user-dropdown" class="user-dropdown">
+          <a href="#" onclick="showFavorites()"><i class="fas fa-heart"></i> Ver Favoritos</a>
+          <a href="#" onclick="premiumManager.logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </div>
+      </div>
+    `;
+    // Cargar favoritos del usuario
+    loadUserFavorites();
+  } 
+  if( !premiumManager.isLoggedIn) {
+    // Usuario no logueado - mostrar botón de login
+    userMenuContainer.innerHTML = `
+      <a href="login.html" class="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+      </a>
+    `;
+  }
+}
+
+// Función para mostrar favoritos (placeholder para futura implementación)
+function showFavorites() {
+  alert('Funcionalidad de ver favoritos será implementada en una ventana separada próximamente.');
+  // Cerrar dropdown
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) {
+    dropdown.classList.remove('show');
+  }
+}
+
+// Función para cargar favoritos del usuario - CORREGIDA
+async function loadUserFavorites() {
+  if (!premiumManager.isLoggedIn) {
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('sessionToken');
+    const response = await fetch(`https://tfg-zbc8.onrender.com/api/user/favorites`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      userFavorites = await response.json();
+      updateFavoriteButtons();
+    }
+  } catch (error) {
+    console.error('Error loading favorites:', error);
+  }
+}
+
+// Función para actualizar botones de favoritos
+function updateFavoriteButtons() {
+  document.querySelectorAll('.favorite-btn, .favorite-btn-modal').forEach(btn => {
+    const locationId = btn.dataset.locationId;
+    if (userFavorites.includes(locationId)) {
+      btn.classList.add('active');
+      const icon = btn.querySelector('i');
+      if (icon) icon.className = 'fas fa-heart';
+      btn.title = 'Eliminar de favoritos';
+    } else {
+      btn.classList.remove('active');
+      const icon = btn.querySelector('i');
+      if (icon) icon.className = 'far fa-heart';
+      btn.title = 'Agregar a favoritos';
+    }
+  });
+}
+
+// Función para toggle del dropdown de usuario
+function toggleUserDropdown() {
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) {
+    dropdown.classList.toggle('show');
+  }
+}
+
+// Cerrar dropdown al hacer click fuera
+document.addEventListener('click', function(event) {
+  const userMenu = document.querySelector('.user-menu');
+  const dropdown = document.getElementById('user-dropdown');
+  
+  if (dropdown && userMenu && !userMenu.contains(event.target)) {
+    dropdown.classList.remove('show');
+  }
+});
 
 // Función para cargar los datos de restaurantes desde un archivo JSON
 async function loadRestaurantsData() {  
   try {
     const response = await fetch("https://tfg-zbc8.onrender.com/listarestaurantes")
-    console.log("Response:", response)
     if (!response.ok) {
       throw new Error("Error al cargar el archivo JSON")
     }
@@ -69,6 +165,92 @@ function generateCuisineList(restaurantsData) {
   }
 }
 
+// Función para manejar el click en favoritos - MEJORADA PARA MANEJAR Z-INDEX
+async function handleFavoriteClick(event, locationId, restaurantName) {
+  event.stopPropagation();
+  event.preventDefault();
+  
+  const button = event.currentTarget;
+  const icon = button.querySelector('i');
+  
+  if (!premiumManager.isLoggedIn) {
+    // SOLUCION PROBLEMA 1: Asegurar que el modal de login tenga mayor z-index
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+      backdrop: 'static',
+      keyboard: false
+    });
+    
+    // Aumentar z-index del modal de login
+    const loginModalElement = document.getElementById('loginModal');
+    loginModalElement.style.zIndex = '1060';
+    
+    loginModal.show();
+
+    const confirmLoginBtn = document.getElementById('confirmLoginBtn');
+    confirmLoginBtn.onclick = () => {
+      window.location.href = 'login.html';
+    };
+    return;
+  }
+
+  // Cambiar estado visual inmediatamente
+  button.disabled = true;
+  icon.className = 'fas fa-spinner fa-spin';
+
+  try {
+    const isFavorite = userFavorites.includes(locationId);
+    
+    let success;
+    if (isFavorite) {
+      // Eliminar de favoritos
+      success = await premiumManager.removeFavoriteFromPage(locationId, restaurantName);
+    } else {
+      // Agregar a favoritos
+      success = await premiumManager.addFavoriteFromPage(locationId, restaurantName);
+    }
+    
+    if (success) {
+      if (isFavorite) {
+        userFavorites = userFavorites.filter(id => id !== locationId);
+        button.classList.remove('active');
+        icon.className = 'far fa-heart';
+        button.title = 'Agregar a favoritos';
+      } else {
+        userFavorites.push(locationId);
+        button.classList.add('active');
+        icon.className = 'fas fa-heart';
+        button.title = 'Eliminar de favoritos';
+      }
+      
+      // Actualizar todos los botones de favoritos para este restaurante
+      updateFavoriteButtonsForRestaurant(locationId, !isFavorite);
+    } else {
+      icon.className = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+    }
+  } catch (error) {
+    icon.className = 'far fa-heart';
+    console.error('Error handling favorite:', error);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+// Función para actualizar botones de favoritos de un restaurante específico
+function updateFavoriteButtonsForRestaurant(locationId, isFavorite) {
+  document.querySelectorAll(`[data-location-id="${locationId}"]`).forEach(btn => {
+    const icon = btn.querySelector('i');
+    if (isFavorite) {
+      btn.classList.add('active');
+      if (icon) icon.className = 'fas fa-heart';
+      btn.title = 'Eliminar de favoritos';
+    } else {
+      btn.classList.remove('active');
+      if (icon) icon.className = 'far fa-heart';
+      btn.title = 'Agregar a favoritos';
+    }
+  });
+}
+
 // Modificar la función para mostrar restaurantes por cocina
 function showRestaurantsByCuisine(cuisine, restaurantsData) {
   // Resaltar el botón seleccionado
@@ -114,10 +296,21 @@ function showRestaurantsByCuisine(cuisine, restaurantsData) {
   // Creamos una tarjeta por cada restaurante filtrado
   filteredRestaurants.forEach((restaurant, index) => {
     const restaurantCol = document.createElement("div")
-    restaurantCol.classList.add("col-md-6", "col-lg-4", "mb-4")
+    restaurantCol.classList.add("restaurant-item")
+
+    const isFavorite = userFavorites.includes(restaurant.locationId);
+    const favoriteClass = isFavorite ? 'active' : '';
+    const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+    const favoriteTitle = isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos';
 
     restaurantCol.innerHTML = `
       <div class="restaurant-card-wrapper">
+        <button class="favorite-btn ${favoriteClass}" 
+                data-location-id="${restaurant.locationId}"
+                onclick="handleFavoriteClick(event, '${restaurant.locationId}', '${restaurant.name}')" 
+                title="${favoriteTitle}">
+          <i class="${favoriteIcon}"></i>
+        </button>
         <div class="restaurant-card">
           <div class="restaurant-card-img">
             <img src="${restaurant.image || "default-restaurant.png"}" 
@@ -131,7 +324,7 @@ function showRestaurantsByCuisine(cuisine, restaurantsData) {
                 ${generateRatingStars(restaurant.rating)}
                 <span class="ms-1">${restaurant.rating || "N/A"}</span>
               </div>
-              <p class="mb-2">${displayPriceLevel(restaurant.pricelevel)}</p>
+              <p class="mb-2">${displayPriceLevel(restaurant.priceLevel)}</p>
             </div>
             <button class="view-details-btn" onclick="openRestaurantModal(${index}, 'cuisine')">
               <i class="fas fa-info-circle"></i> Ver detalles
@@ -161,8 +354,12 @@ function createRestaurantModals(restaurants, type) {
       .map((c) => `<span class="cuisine-tag" onclick="navigateToCuisine('${c}')">${c}</span>`)
       .join("")
 
-    const address =
-      restaurant.address_string || restaurant.street1 || "Dirección no disponible"
+    const address = restaurant.address_string || restaurant.street1 || "Dirección no disponible"
+    
+    const isFavorite = userFavorites.includes(restaurant.locationId);
+    const favoriteClass = isFavorite ? 'active' : '';
+    const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+    const favoriteTitle = isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos';
 
     container.insertAdjacentHTML(
       "beforeend",
@@ -182,8 +379,16 @@ function createRestaurantModals(restaurants, type) {
                   </div>
                 </div>
                 <div class="modal-restaurant-content">
-                  <div class="rating-stars mb-3">${generateRatingStars(restaurant.rating)}<span class="ms-2">${restaurant.rating || "N/A"}</span></div>
-                  <p class="mb-2">${displayPriceLevel(restaurant.pricelevel)}</p>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="rating-stars">${generateRatingStars(restaurant.rating)}<span class="ms-2">${restaurant.rating || "N/A"}</span></div>
+                    <button class="btn btn-outline-warning favorite-btn-modal ${favoriteClass}" 
+                            data-location-id="${restaurant.locationId}"
+                            onclick="handleFavoriteClick(event, '${restaurant.locationId}', '${restaurant.name}')" 
+                            title="${favoriteTitle}">
+                      <i class="${favoriteIcon}"></i> Favorito
+                    </button>
+                  </div>
+                  <p class="mb-2">${displayPriceLevel(restaurant.priceLevel)}</p>
                   <p><strong><i class="fas fa-map-marker-alt"></i> Dirección:</strong></p>
                   <p>${address}</p>
                   ${cuisineTags ? `<p><strong><i class="fas fa-utensils"></i> Cocina:</strong></p><div class="cuisine-tags mb-3">${cuisineTags}</div>` : ""}
@@ -230,6 +435,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Configurar funciones globales para que sean accesibles desde HTML
   window.openRestaurantModal = openRestaurantModal
   window.navigateToCuisine = navigateToCuisine
+  window.handleFavoriteClick = handleFavoriteClick
+  window.toggleUserDropdown = toggleUserDropdown
+  window.showFavorites = showFavorites
+
+  // Esperar a que premiumManager esté listo
+  document.addEventListener("userReady", () => {
+    initUserMenu();
+  });
 
   // Cargar datos de restaurantes
   const restaurantsData = await loadRestaurantsData()

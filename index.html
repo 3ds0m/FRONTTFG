@@ -22,7 +22,7 @@
     <div class="container">
       <nav class="navbar navbar-expand-lg py-2">
         <div class="logo navbar-brand">
-          <h1>Madrid<span>Local</span></h1>
+          <h1><a href="index.html">Madrid<span>Local</span></a></h1>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -34,6 +34,9 @@
             <li class="nav-item"><a class="nav-link" href="Cocinas.html">Cocinas</a></li>
             <li class="nav-item"><a class="nav-link" href="#ofertas">Ofertas</a></li>
             <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+            <li class="nav-item">
+              <div id="user-menu-container" class="nav-link"></div>
+            </li>
           </ul>
         </div>
       </nav>
@@ -126,7 +129,28 @@
     </div>
   </div>
 </section>
-
+    <!-- Contenedor para los modales -->
+    <div class="modal-container">
+        <!-- Los modales se generarán dinámicamente con JavaScript -->
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <div class="modal-header bg-primary text-white rounded-top">
+                        <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-sign-in-alt"></i> Iniciar sesión requerida</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Debes iniciar sesión para agregar favoritos.<br>¿Deseas ir a la página de inicio de sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="view-details-btn" data-bs-dismiss="modal">Cancelar</button>
+                        <button id="confirmLoginBtn" type="button" class="view-details-btn">Ir al login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   <!-- NOSOTROS -->
   <section id="nosotros">
     <div class="container">
@@ -153,7 +177,7 @@
         </div>
         <div class="col-md-6 text-md-end">
           <p>Contacto: <a href="mailto:edson7mayo@gmail.com">edson7mayo@gmail.com</a></p>
-        </div>
+        </div>  
       </div>
     </div>
   </footer>
@@ -169,5 +193,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- JavaScript personalizado -->
   <script type="module" src="Scripts/Index/index.js"></script>
+  <script type="module" src="Premium.js"></script>
 </body>
 </html>
