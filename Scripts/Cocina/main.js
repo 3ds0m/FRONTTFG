@@ -3,8 +3,7 @@ import { generateRatingStars, displayPriceLevel, showError } from "./utils.js"
 let currentCuisineRestaurants = []
 let allRestaurantsData = []
 let userFavorites = []
-const premiumManager = window.premiumManager || {
-  isLoggedIn: false}
+const premiumManager = window.premiumManager
 
 // Función para inicializar el menú de usuario
 function initUserMenu() {
