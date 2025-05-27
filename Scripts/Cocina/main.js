@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.handleFavoriteClick = handleFavoriteClick
   window.toggleUserDropdown = toggleUserDropdown
   window.showFavorites = showFavorites
-
+  window.premiumManager = premiumManager // Asegurar que premiumManager esté disponible globalmente
   // Esperar a que premiumManager esté listo
   document.addEventListener("userReady", () => {
     initUserMenu();
