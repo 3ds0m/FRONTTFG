@@ -429,7 +429,7 @@ function navigateToCuisine(cuisine) {
   url.searchParams.set("cuisine", cuisine) // Agregar el tipo de cocina como parámetro en la URL
   window.location.href = url.toString() // Redirigir a la nueva URL
 }
-
+window.premiumManager = premiumManager
 // Modificar la función para inicializar la página
 document.addEventListener("DOMContentLoaded", async () => {
   // Configurar funciones globales para que sean accesibles desde HTML
@@ -438,7 +438,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.handleFavoriteClick = handleFavoriteClick
   window.toggleUserDropdown = toggleUserDropdown
   window.showFavorites = showFavorites
-  window.premiumManager = premiumManager // Asegurar que premiumManager esté disponible globalmente
   // Esperar a que premiumManager esté listo
   document.addEventListener("userReady", () => {
     initUserMenu();
