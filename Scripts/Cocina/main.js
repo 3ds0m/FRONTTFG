@@ -1,9 +1,10 @@
 import { generateRatingStars, displayPriceLevel, showError } from "./utils.js"
-import { premiumManager } from "../../Premium.js"
 // Variables globales para almacenar datos y estado
 let currentCuisineRestaurants = []
 let allRestaurantsData = []
 let userFavorites = []
+const premiumManager = window.premiumManager || {
+  isLoggedIn: false}
 
 // Función para inicializar el menú de usuario
 function initUserMenu() {
