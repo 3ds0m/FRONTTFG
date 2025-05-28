@@ -1,212 +1,417 @@
 a,
-        a:visited {
-        text-decoration: none;
-        color: inherit;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg,#ff6b6b);
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px 0;
-        }
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
 
-        .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
 
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-        }
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+}
 
-        .navbar-brand span {
-            color: #ff6b6b;
-        }
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
 
-        .main-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            margin: 20px auto;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            max-width: 1200px;
-        }
+.navbar-brand span {
+    color: #ff6b6b;
+}
 
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+.navbar-nav .nav-link {
+    font-weight: 500;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
 
-        .page-header h1 {
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+.navbar-nav .nav-link:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
 
-        .page-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
+.main-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    margin: 20px auto;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 1200px;
+}
 
-        .restaurant-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            overflow: hidden;
-            height: 100%;
-        }
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
 
-        .restaurant-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
+.page-header h1 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
 
-        .restaurant-image {
-            height: 200px;
-            object-fit: cover;
-            width: 100%;
-        }
+.page-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
 
-        .rating {
-            color: #ffc107;
-        }
+.restaurant-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    height: 100%;
+}
 
-        .btn-remove-favorite {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            border: none;
-            color: white;
-            transition: all 0.3s ease;
-        }
+.restaurant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
 
-        .btn-remove-favorite:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            color: white;
-        }
+.restaurant-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            transition: all 0.3s ease;
-        }
+.rating {
+    color: #ffc107;
+}
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+.btn-remove-favorite {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
 
-        .btn-logout {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            border: none;
-            color: white;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
+.btn-remove-favorite:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    color: white;
+}
 
-        .btn-logout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            color: white;
-        }
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
 
-        .empty-state i {
-            font-size: 4rem;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
+.btn-outline-primary {
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
 
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 300px;
-        }
+.btn-outline-primary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
 
-        .error-message {
-            text-align: center;
-            color: #dc3545;
-            padding: 40px;
-        }
+.btn-outline-danger {
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b;
+    background: transparent;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
 
-        .login-prompt {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            margin: 20px 0;
-        }
+.btn-outline-danger:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+}
 
-        .login-prompt i {
-            font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
+.btn-logout {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
 
-        .user-info {
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 30px;
-        }
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    color: white;
+}
 
-        .favorites-count {
-            background: #667eea;
-            color: white;
-            border-radius: 50px;
-            padding: 5px 15px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
 
-        .cuisine-badge {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+.empty-state i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1.5rem;
+}
 
-        .location-info {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
+.empty-state h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
 
-        /* Ensure proper grid layout */
-        #favorites-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0;
-        }
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
 
-        #favorites-container .col-md-6.col-lg-4 {
-            display: flex;
-            flex-direction: column;
-        }
-    .random-restaurant-img {
-  width: 100%;
-  height: 180px;
-  margin-bottom: 1rem;
-  position: relative;
-  overflow: hidden;
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    padding: 2rem;
+}
+
+.login-prompt {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.login-prompt i {
+    font-size: 3rem;
+    color: #667eea;
+    margin-bottom: 1.5rem;
+}
+
+.login-prompt h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.login-prompt p {
+    margin-bottom: 2rem;
+    max-width: 400px;
+}
+
+.user-info {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.favorites-count {
+    background: #667eea;
+    color: white;
+    border-radius: 50px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.cuisine-badge {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.location-info {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.random-restaurant-img {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+
+    .main-container {
+        margin: 10px;
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .page-header p {
+        font-size: 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+        min-height: 300px;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+    }
+
+    .empty-state h4 {
+        font-size: 1.5rem;
+    }
+
+    .login-prompt {
+        padding: 2rem 1rem;
+        min-height: 300px;
+    }
+
+    .login-prompt i {
+        font-size: 2.5rem;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .user-info .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .favorites-count {
+        align-self: flex-start;
+    }
+
+    #actions-section .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    #actions-section .me-3 {
+        margin-right: 0 !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-container {
+        margin: 5px;
+        padding: 1rem;
+    }
+
+    .restaurant-image {
+        height: 150px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        margin: 0.25rem 0;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .empty-state {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .login-prompt {
+        padding: 1.5rem 0.5rem;
+    }
+}
+
+/* Ensure proper grid layout */
+#favorites-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+#favorites-container .col-md-6.col-lg-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Center buttons properly */
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .text-center {
+        flex-direction: row;
+        gap: 1rem;
+    }
 }
