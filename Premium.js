@@ -2,7 +2,6 @@
 
 const API_BASE = "https://tfg-zbc8.onrender.com/api";
 
-// Clase para manejar la autenticación y favoritos
 class PremiumManager {
     constructor() {
         this.currentUser = null;
@@ -10,11 +9,9 @@ class PremiumManager {
     }
 
     init() {
-        // Verificar si estamos en la página de login
         if (window.location.pathname.includes('Login.html')) {
             this.initLoginPage();
         } else {
-            // Verificar sesión en otras páginas
             this.checkSession();
         }
     }
@@ -27,49 +24,42 @@ class PremiumManager {
             }
         };
 
-        // Event listeners para login
         this.setupLoginEventListeners();
+        this.setupForgotPasswordLinks();
     }
 
     setupLoginEventListeners() {
-        // Mostrar formulario de registro
         const showRegisterBtn = document.getElementById('show-register');
         if (showRegisterBtn) {
             showRegisterBtn.onclick = (e) => {
                 e.preventDefault();
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('register-form').style.display = 'block';
+                this.showRegisterForm();
             };
         }
 
-        // Mostrar formulario de login
         const showLoginBtn = document.getElementById('show-login');
         if (showLoginBtn) {
             showLoginBtn.onclick = (e) => {
                 e.preventDefault();
-                document.getElementById('register-form').style.display = 'none';
-                document.getElementById('login-form').style.display = 'block';
+                this.showLoginForm();
             };
         }
 
-        // Registro
-        const registerBtn = document.getElementById('btn-register');
-        if (registerBtn) {
-            registerBtn.onclick = () => this.register();
-        }
-
-        // Login
         const loginBtn = document.getElementById('btn-login');
         if (loginBtn) {
             loginBtn.onclick = () => this.login();
         }
 
-        // Enter key support
+        const registerBtn = document.getElementById('btn-register');
+        if (registerBtn) {
+            registerBtn.onclick = () => this.register();
+        }
+
         document.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const loginForm = document.getElementById('login-form');
                 const registerForm = document.getElementById('register-form');
-                
+
                 if (loginForm && loginForm.style.display !== 'none') {
                     this.login();
                 } else if (registerForm && registerForm.style.display !== 'none') {
@@ -103,14 +93,13 @@ class PremiumManager {
 
             const message = await response.text();
             this.showAlert(message, 'success');
-            
+
             // Limpiar campos y mostrar login
             document.getElementById('register-username').value = '';
             document.getElementById('register-email').value = '';
             document.getElementById('register-password').value = '';
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
-            
+            this.showLoginForm();
+
         } catch (error) {
             this.showAlert(`Error: ${error.message}`, 'danger');
         }
@@ -139,10 +128,82 @@ class PremiumManager {
             const data = await response.json();
             localStorage.setItem('sessionToken', data.token);
             this.validateSession(data.token);
-            
+
         } catch (error) {
             this.showAlert('Usuario o contraseña incorrectos', 'danger');
         }
+    }
+
+    async sendForgotPassword() {
+        const email = document.getElementById('forgot-email').value.trim();
+
+        if (!email) {
+            this.showAlert('Por favor ingresa tu correo electrónico', 'warning');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText);
+            }
+
+            const message = await response.text();
+            this.showAlert(message, 'success');
+
+            // Volver al login después de enviar correo
+            this.showLoginForm();
+
+        } catch (error) {
+            this.showAlert(`Error: ${error.message}`, 'danger');
+        }
+    }
+        setupForgotPasswordLinks() {
+        const showForgotLink = document.getElementById('show-forgot-password');
+        const forgotFormLink = document.getElementById('show-login-from-forgot');
+
+        if (showForgotLink) {
+            showForgotLink.onclick = (e) => {
+                e.preventDefault();
+                this.showForgotPasswordForm();
+            };
+        }
+
+        if (forgotFormLink) {
+            forgotFormLink.onclick = (e) => {
+                e.preventDefault();
+                this.showLoginForm();
+            };
+        }
+
+        const forgotBtn = document.getElementById('btn-forgot-password');
+        if (forgotBtn) {
+            forgotBtn.onclick = () => this.sendForgotPassword();
+        }
+    }
+
+    showRegisterForm() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+        document.getElementById('forgot-password-form').style.display = 'none';
+    }
+
+    showLoginForm() {
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('forgot-password-form').style.display = 'none';
+    }
+
+    showForgotPasswordForm() {
+        document.getElementById('forgot-password-form').style.display = 'block';
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'none';
     }
 
     async logout() {
@@ -160,12 +221,10 @@ class PremiumManager {
         } finally {
             localStorage.removeItem('sessionToken');
             this.currentUser = null;
-            
-            // Si estamos en login.html, mostrar formularios
+
             if (window.location.pathname.includes('Login.html')) {
-                this.showLogin();
+                this.showLoginForm();
             } else {
-                // Si estamos en otra página, recargar para actualizar el menú
                 window.location.reload();
             }
         }
@@ -174,51 +233,57 @@ class PremiumManager {
     async validateSession(token) {
         try {
             const response = await fetch(`${API_BASE}/auth/validate?token=${token}`);
-            
+
             if (!response.ok) {
                 throw new Error('Sesión inválida');
             }
 
             const user = await response.json();
             this.currentUser = user;
-            
-            // Si estamos en login.html, mostrar mensaje de éxito
+
             if (window.location.pathname.includes('Login.html')) {
                 this.showSuccessMessage(user);
             }
-            
+
         } catch (error) {
             localStorage.removeItem('sessionToken');
             this.currentUser = null;
             if (window.location.pathname.includes('Login.html')) {
-                this.showLogin();
+                this.showLoginForm();
             }
         }
-    }
-
-    showLogin() {
-        const authContainer = document.getElementById('auth-container');
-        const successContainer = document.getElementById('success-container');
-        
-        if (authContainer) authContainer.style.display = 'block';
-        if (successContainer) successContainer.style.display = 'none';
     }
 
     showSuccessMessage(user) {
         const authContainer = document.getElementById('auth-container');
         const successContainer = document.getElementById('success-container');
-        
+
         if (authContainer) authContainer.style.display = 'none';
         if (successContainer) {
             successContainer.style.display = 'block';
+
+            successContainer.classList.add('success-message'); // agrega clase para estilos
+
             const welcomeText = successContainer.querySelector('h2');
             if (welcomeText) {
                 welcomeText.innerHTML = `<i class="fas fa-check-circle"></i> ¡Bienvenido, ${user.username}!`;
             }
+
+            // Crear botón con la clase btn que ya tienes definida
+            let button = document.createElement('button');
+            button.textContent = 'Ir a ver más restaurantes';
+            button.className = 'btn';  // usa la clase btn para que tome estilos
+
+            button.onclick = () => {
+                window.location.href = 'Cocinas.html';
+            };
+
+            successContainer.appendChild(button);
         }
     }
 
-    // Método para verificar si el usuario está logueado (para usar en otras páginas)
+
+
     checkSession() {
         const token = localStorage.getItem('sessionToken');
         if (token) {
@@ -239,15 +304,12 @@ class PremiumManager {
             localStorage.removeItem('sessionToken');
             this.currentUser = null;
         } finally {
-            // Emitir evento para indicar que ya está listo
             document.dispatchEvent(new CustomEvent('userReady'));
         }
     }
 
-    // Método para agregar favorito desde otras páginas
     async addFavoriteFromPage(locationId, restaurantName) {
         if (!this.currentUser) {
-            // Redirigir a login si no está logueado
             if (confirm('Debes iniciar sesión para agregar favoritos. ¿Quieres ir a la página de login?')) {
                 window.location.href = 'Login.html';
             }
@@ -267,14 +329,13 @@ class PremiumManager {
 
             this.showAlert(`${restaurantName} agregado a favoritos`, 'success');
             return true;
-            
+
         } catch (error) {
-            this.showAlert('El Restaurante ya esta en la lista de favoritos', 'danger');
+            this.showAlert('El Restaurante ya está en la lista de favoritos', 'danger');
             return false;
         }
     }
 
-    // Método para eliminar favorito
     async removeFavoriteFromPage(locationId, restaurantName) {
         if (!this.currentUser) return false;
 
@@ -291,7 +352,7 @@ class PremiumManager {
 
             this.showAlert(`${restaurantName} eliminado de favoritos`, 'success');
             return true;
-            
+
         } catch (error) {
             this.showAlert('No se pudo eliminar favorito', 'danger');
             return false;
@@ -299,7 +360,6 @@ class PremiumManager {
     }
 
     showAlert(message, type) {
-        // Remover alertas existentes
         const existingAlerts = document.querySelectorAll('.alert');
         existingAlerts.forEach(alert => alert.remove());
 
@@ -313,7 +373,6 @@ class PremiumManager {
 
         document.body.appendChild(alertDiv);
 
-        // Auto-remove after 5 seconds
         setTimeout(() => {
             if (alertDiv.parentNode) {
                 alertDiv.remove();
@@ -321,21 +380,15 @@ class PremiumManager {
         }, 5000);
     }
 
-    // Getter para verificar si el usuario está logueado
     get isLoggedIn() {
         return this.currentUser !== null;
     }
 
-    // Getter para obtener el usuario actual
     get user() {
         return this.currentUser;
     }
 }
 
-// Crear instancia global
 const premiumManager = new PremiumManager();
-
-// Hacer disponible globalmente para uso en HTML
 window.premiumManager = premiumManager;
-
 document.dispatchEvent(new CustomEvent('userReady'));

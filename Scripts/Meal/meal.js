@@ -234,9 +234,10 @@ function initUserMenu() {
   }
 }
 
-// Función para mostrar favoritos (placeholder para futura implementación)
 function showFavorites() {
-  alert('Funcionalidad de ver favoritos será implementada en una ventana separada próximamente.');
+  // Redirigir a Favoritos.html
+  window.location.href = 'Favoritos.html';
+
   // Cerrar dropdown
   const dropdown = document.getElementById('user-dropdown');
   if (dropdown) {
