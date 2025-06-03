@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Cargar todas las ofertas al iniciar la página
   loadAllOffers()
-
+  initUserMenu();
   document.addEventListener("userReady", () => {
     initUserMenu();
   });

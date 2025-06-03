@@ -440,6 +440,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.toggleUserDropdown = toggleUserDropdown
   window.showFavorites = showFavorites
   // Esperar a que premiumManager esté listo
+  initUserMenu();
   document.addEventListener("userReady", () => {
     initUserMenu();
   });

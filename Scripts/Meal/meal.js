@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   // Cargar traducciones
   await cargarTraducciones();
-  
+  initUserMenu();
   // Cargar recetas iniciales
   mostrarRecetas('egg');
 });

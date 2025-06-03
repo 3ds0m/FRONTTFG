@@ -3,6 +3,7 @@ import { initRestaurants } from './restaurant.js';
 import { showError , initUserMenu , loadUserFavorites , toggleUserDropdown} from './utils.js';
 import { initOffers } from './offers.js';
 document.addEventListener("DOMContentLoaded", () => {
+  initUserMenu();
   document.addEventListener("userReady", () => {
     initUserMenu();
   });
