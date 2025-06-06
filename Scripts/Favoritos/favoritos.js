@@ -276,7 +276,11 @@ function showRestaurantDetails(locationId) {
             <p><strong>🍽️ Tipo:</strong> ${location.cuisine || 'Restaurante'}</p>
             <p><strong>⭐ Rating:</strong> ${rating}/5 (${location.reviewCount} Reseñas)</p>
             <p><strong>🏙️ Ciudad:</strong> ${location.city}</p>
-            <p><strong>📞 Teléfono:</strong> ${location.phoneNumber || 'No disponible'}</p>
+            <p><strong>📞 Teléfono:</strong> 
+                ${location.phoneNumber 
+                ? `<a href="tel:${location.phoneNumber}">${location.phoneNumber}</a>` 
+                : 'No disponible'}
+            </p>
             <a href="https://www.google.com/maps/search/${encodeURIComponent(location.name)}+${encodeURIComponent(location.addressString)}" target="_blank" class="btn btn-sm btn-outline-primary">
                 <i class="modal-title"></i> Ver en mapa
             </a>
