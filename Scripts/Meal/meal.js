@@ -114,7 +114,7 @@ function crearModalesRecetas(recetas) {
                     `).join('')}
                   </ul>
                   <div class="precio-total-modal">
-                    <i class="fas fa-euro-sign me-1"></i> Precio total estimado: <strong>${precioTotal} €</strong>
+                    <i class="fas fa-euro-sign me-1"></i> Precio total estimado para dos personas: <strong>${precioTotal} €</strong>
                   </div>
                   <p class="mt-2 mb-0"><small class="text-muted">*Precios estimados por ingrediente</small></p>
                 </div>

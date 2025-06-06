@@ -25,4 +25,3 @@ El proyecto contiene múltiples archivos HTML (como `index.html`, `Login.html`, 
 ## Resultado
 
 Vercel generó una URL pública con el sitio desplegado. Cada cambio que subo a GitHub actualiza automáticamente el contenido en producción.
-
